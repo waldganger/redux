@@ -8,6 +8,21 @@ class Posts extends Component {
     this.props.fetchPosts();
   }
 
+  // componentDidUpdate(prevProps) {
+  //   if (this.props.posts !== prevProps.posts) {
+  //     console.log("ses vraie");
+  //     console.log(this.props.post);
+
+  //     prevProps.posts.unshift(this.props.posts);
+  //   }
+  // }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.newPost) {
+      this.props.posts.unshift(nextProps.newPost);
+    }
+  }
+
   render() {
     const postItems = this.props.posts.map((post) => (
       <div key={post.id}>
@@ -22,10 +37,12 @@ class Posts extends Component {
 Posts.propTypes = {
   fetchPosts: PropTypes.func.isRequired,
   posts: PropTypes.array.isRequired,
+  post: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({
   posts: state.posts.items,
+  newPost: state.posts.item,
 });
 
 export default connect(mapStateToProps, { fetchPosts })(Posts);
